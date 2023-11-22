@@ -48,7 +48,6 @@ def get_new_f_name(f_name_list):
 
     return f_name + ".jpg"
 
-
 def main():
     
     camera = cv2.VideoCapture(0)

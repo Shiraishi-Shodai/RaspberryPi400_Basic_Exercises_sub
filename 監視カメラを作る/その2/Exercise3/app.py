@@ -1,27 +1,31 @@
-from flask import render_template, Flask, Response
-import cv2 as cv
+from flask import render_template, Flask, Response, request
+import cv2
 
-app = Flask(__name__, template_folder="./templates")
+app = Flask(__name__, template_folder="./templates", static_folder="./static")
+
+cap = cv2.VideoCapture(0, cv2.CAP_MSMF)
+cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+cap.set(cv2.CAP_PROP_FPS, 1)           # カメラFPSを60FPSに設定(1秒間に60枚表示)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 300) # カメラ画像の横幅を1280に設定
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 200) # カメラ画像の縦幅を720に設定
 
 def gen_frames():
     
    while True:
-       camera = cv.VideoCapture(0)
-       success, frame = camera.read()
-       if not success:
+       ret, frame = cap.read()
+       if not ret:
            break
-       else:
+       else:           
            #フレームデータをjpgに圧縮(ret: bool, buffer: ndarray)
-           ret, buffer = cv.imencode('.jpg',frame)
+           ret, buffer = cv2.imencode('.jpg',frame)
            # bytesデータ化
            frame = buffer.tobytes()
-           # カメラを解放
-           camera.release()
+
             # yield 莫大な量の戻り値を小分けにして返すことが出来る
             # 新しいフレーム（画像）をブラウザに送信
-           yield (b'--frame\r\n'
-                  b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        
+       yield (b'--frame\r\n'
+              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+   cap.release()
 
 @app.route('/video_feed')
 def video_feed():
@@ -50,12 +54,32 @@ def video_feed():
 
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/capture')
+def capture():
+    ret, frame = cap.read()
+    capture_error = ""
+
+    if not ret:
+        capture_error="キャプチャーエラー"
+    else:
+        cv2.imwrite("./static/img/picture.jpg", frame)
+
+    return render_template('capture.html', capture_error=capture_error)
+
+@app.route('/save', methods=["POST"])
+def save():
+    if request.method == "POST":
+        img = cv2.imread("./static/img/picture.jpg")    
+        file_name = request.form["file_name"] + ".jpg"
+        cv2.imwrite(file_name, img)
+        # cap.release()
+
+        return  "保存しました"
 @app.route('/')
 @app.route('/index')
 def index():
    
-   user = {'username': 'FZ50'}
-   return render_template('index.html', title='home', user=user)
+   return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

@@ -1,14 +1,17 @@
 from flask import render_template, Flask, Response
 import cv2 as cv
 
-app = Flask(__name__, template_folder="../templates")
+'''
+二回目以降、アクセスすると、画像が表示されなくなる
+'''
+app = Flask(__name__, template_folder="./templates")
 
 def gen_frames():
     
    while True:
-       camera = cv.VideoCapture(0)
-       success, frame = camera.read()
-       if not success:
+       camera = cv.VideoCapture(1)
+       ret, frame = camera.read()
+       if not ret:
            break
        else:
            #フレームデータをjpgに圧縮(ret: bool, buffer: ndarray)

@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    </head>
+    <body>
+
+        <div class="main">
+
+            {% if capture_error == "キャプチャーエラー" %}
+            <h2 id="error">{{ capture_error }}</h2>
+            {% else %}
+            <h1>撮影成功！</h1>
+            <img src="{{url_for('static', filename='img/picture.jpg')}}">
+            <form action="{{url_for('save')}}" method="post">
+                <label for="file_name">ファイル名: 
+                    <input type="text" name="file_name" id="file_name" required>
+                </label>
+
+                <button type="submit">保存</button>
+            </form>
+            {% endif %}
+    
+        </div>
+
+        <script src="{{url_for('static', filename='js/app.js')}}"></script>
+    </body>
+ </html>

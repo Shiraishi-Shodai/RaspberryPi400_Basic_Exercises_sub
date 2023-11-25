@@ -5,9 +5,9 @@ app = Flask(__name__, template_folder="./templates", static_folder="./static")
 
 cap = cv2.VideoCapture(0, cv2.CAP_MSMF)
 cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
-cap.set(cv2.CAP_PROP_FPS, 1)           # カメラFPSを60FPSに設定(1秒間に60枚表示)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 300) # カメラ画像の横幅を1280に設定
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 200) # カメラ画像の縦幅を720に設定
+cap.set(cv2.CAP_PROP_FPS, 20.0)           # カメラFPSを20FPSに設定(1秒間に20枚表示)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 300) # カメラ画像の横幅を300に設定
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 200) # カメラ画像の縦幅を200に設定
 
 def gen_frames():
     

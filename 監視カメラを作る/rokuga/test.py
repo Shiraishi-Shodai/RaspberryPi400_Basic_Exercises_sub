@@ -5,7 +5,7 @@ cap = cv2.VideoCapture(0)
 # コーデック（fourcc）の設定
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 # 動画ファイルの設定（保存先、FPS、サイズ）
-video = cv2.VideoWriter('C:/Users/shodai/Desktop/RaspberryPi400_Basic_Exercises/監視カメラを作る/その2/Exercise3/test/output.avi', fourcc, 20.0, (640,480))
+video = cv2.VideoWriter('output.avi', fourcc, 20.0, (640,480))
 # 動画の読み込みに問題がない限り処理を継続する
 while(cap.isOpened()):
     # Bool値とキャプチャ画像を変数に格納

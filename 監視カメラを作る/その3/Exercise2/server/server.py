@@ -1,4 +1,4 @@
-from flask import Flask, Response, request
+from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
 import cv2
 
@@ -9,7 +9,7 @@ cap = cv2.VideoCapture(0)
 fmt = cv2.VideoWriter_fourcc(*'XVID')    
 fps = 20.0
 size = (640, 480)
-writer = cv2.VideoWriter('../out.avi', fmt, fps, size)
+writer = cv2.VideoWriter('video.avi', fmt, fps, size)
 
 def gen_frames():
     while True:
@@ -67,25 +67,32 @@ def video_feed():
     # Responseオブジェクトはジェネレータを指定できる
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')    
 
-@app.route('/recoding')
-def recoding_start(methods = {"GET", "POST"}):
+@app.route('/recoding', methods = ["GET", "POST"])
+def recoding():
 
+    print('ここまで')
     if request.method == "GET":
+        res = {'recoding': '録画を開始します'}
+        print(f"録画を開始します")
 
-        while True:
-
-            ret, frame = cap.read()
-            if not ret:
-                break
+    while True:
+        if request.method == "POST":
             
-            resize_frame = cv2.resize(frame, size)
-            writer.write(resize_frame)
+            writer.release()
+            cap.release()
+            res = {'recoding': '録画を停止しました'}
+            print(f'受け取ったデータ{request.get_json()}')
+            print(f"録画を停止しました")
+            break
 
-    elif request.method == "POST":
-        writer.release()
-        cap.release()
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        resize_frame = cv2.resize(frame, size)
+        writer.write(resize_frame)
 
-    return {"start!": "aaa"}
+    return jsonify(res)
     
 if __name__ == "__main__":
     app.run(port='5000', debug=True)

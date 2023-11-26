@@ -1,6 +1,8 @@
 from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
 import cv2
+from tkinter import filedialog
+import shutil
 
 app = Flask(__name__)
 CORS(app)
@@ -41,7 +43,6 @@ def gen_frames():
         # ここで一旦待機
         # 要素が要求される場面でその都度データを算出するので、メモリを多く消費しない
     
-    cap.release()
     
 @app.route('/video_feed')
 def video_feed():
@@ -70,7 +71,6 @@ def video_feed():
 @app.route('/recoding', methods = ["GET", "POST"])
 def recoding():
 
-    print('ここまで')
     if request.method == "GET":
         res = {'recoding': '録画を開始します'}
         print(f"録画を開始します")
@@ -78,11 +78,12 @@ def recoding():
     while True:
         if request.method == "POST":
             
+            # 後処理
+            # global writer, cap
             writer.release()
             cap.release()
             res = {'recoding': '録画を停止しました'}
-            print(f'受け取ったデータ{request.get_json()}')
-            print(f"録画を停止しました")
+            print('停止しました')
             break
 
         ret, frame = cap.read()
@@ -94,5 +95,19 @@ def recoding():
 
     return jsonify(res)
     
+
+@app.route('/save', methods=['POST'])
+def save():
+    if request.method == 'POST':
+        file_name = request.get_json()['fileName']
+        
+        folder_name = filedialog.askdirectory(initialdir=dir)
+        save_path = folder_name + '/' + file_name + '.avi'
+        
+        print(f'パス: {save_path}')        
+        shutil.move('video.avi', save_path)
+
+    return jsonify({'Hello': "I'm save function"})
+        
 if __name__ == "__main__":
     app.run(port='5000', debug=True)

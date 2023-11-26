@@ -100,7 +100,7 @@ def recoding():
 def save():
     if request.method == 'POST':
         file_name = request.get_json()['fileName']
-        
+        print(f'ファイル名: {file_name}')                
         folder_name = filedialog.askdirectory(initialdir=dir)
         save_path = folder_name + '/' + file_name + '.avi'
         

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from "axios";
 import * as setting from '../setting.js';
 import {Route, Routes, Link } from 'react-router-dom'
-import Test from './Modal.jsx';
+import './Streaming.css'
 
 function Streaming({setModal}) {
 
@@ -32,12 +32,18 @@ function Streaming({setModal}) {
       }
 
   return (
-    <div>
+    <div className='container'>
+      <div className="child">
 
         <img src="http://localhost:5000/video_feed" alt="video feed" />
-        <button type='button' disabled={!disable} onClick={recoding_start}>録画開始</button>        
+        <div className='buttons'>
 
-        <Link to='/modal'><button type='button' disabled={disable} onClick={recoding_stop}>録画停止</button></Link>
+          <button type='button' disabled={!disable} onClick={recoding_start} className='start'>録画開始</button>        
+          <Link to='/modal'><button type='button' disabled={disable} onClick={recoding_stop} className='stop'>録画停止</button></Link>
+          
+        </div>
+      </div>
+
     </div>
   )
 }

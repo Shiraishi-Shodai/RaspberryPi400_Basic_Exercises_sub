@@ -1,0 +1,45 @@
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /*左右中央寄せ*/
+    align-items: center; /*上下中央寄せ*/
+}
+
+.child {
+    flex-flow: column; /* 画像とボタンを縦並びに */
+}
+
+.child img {
+    margin-bottom: 10px;
+
+}
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons button {
+    margin-right: 60px;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    white-space: nowrap;
+}
+
+.buttons button:hover {
+    opacity: 0.5;
+}
+.buttons .start {
+    background-color: rgb(71, 231, 71);
+}
+
+.buttons .stop {
+    background-color: red;
+}
+
+.buttons a {
+    text-decoration: none;
+    color: white;
+    width: 100px;
+    height: 100px;
+}

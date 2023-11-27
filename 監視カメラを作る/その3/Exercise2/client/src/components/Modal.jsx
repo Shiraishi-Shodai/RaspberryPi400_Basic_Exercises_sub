@@ -5,6 +5,12 @@ import * as setting from '../setting.js';
 import { Link } from 'react-router-dom';
 
 function Modal({modal}) {
+
+    const instance = axios.create({
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        }
+})
     const [fileNme, setFileName] = useState(''); 
 
     const handleFileName = (e)=> {
@@ -15,11 +21,11 @@ function Modal({modal}) {
     }
 
     const sendFileName = async()=> {
-        axios.post('/save', {'fileName': fileNme})
+        instance.post('/save', {'fileName': fileNme})
         .then((res) => {
             console.log(res.data);
             console.log(res.status);
-            alert(res.data);
+            alert("ダウンロードが完了しました");
         }).catch((res)=> {
             console.log("modal" + res.response);
         })

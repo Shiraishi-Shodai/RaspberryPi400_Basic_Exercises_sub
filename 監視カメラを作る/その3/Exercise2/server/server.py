@@ -4,13 +4,17 @@ import cv2
 from tkinter import filedialog
 import shutil
 import sys
-sys.coinit_flags = 2 # tkinterはデフォルトでCMSスレッド？らしいものを使用するらしいが、windowsはそれが使えないのでwindows仕様に合わせる
+
+# tkinterはデフォルトでCMSスレッド？らしいものを使用するらしいが、windowsはそれが使えないのでwindows仕様に合わせる
+# sys.coinit_flags = 2 
 
 app = Flask(__name__)
 CORS(app)
 
 cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_SETTINGS, 1)
+print(cap.isOpened())
+
+# cap.set(cv2.CAP_PROP_SETTINGS, 1)
 fmt = cv2.VideoWriter_fourcc(*'XVID')    
 fps = 20.0
 size = (640, 480)
@@ -86,6 +90,7 @@ def recoding():
             writer.write(resize_frame)
 
         if request.method == "POST":
+            print(f'ここまで: {request.get_json()["message"]}')
             # 後処理
             writer.release()
             cap.release()
@@ -96,7 +101,7 @@ def recoding():
             break
 
 
-    return jsonify(res)
+    return jsonify({"a": "b"})
     
 
 @app.route('/save', methods=['POST'])
@@ -105,7 +110,7 @@ def save():
     if request.method == 'POST':
         file_name = request.get_json()['fileName']
         # print(f'到達: {file_name}')        
-        folder_name = filedialog.askdirectory(initialdir=r"C:\Users\shodai\Downloads", title="ダウンロード先")
+        folder_name = filedialog.askdirectory(initialdir=dir, title="ダウンロード先")
         save_path = folder_name + '/' + file_name + '.avi'
 
         shutil.move('video.avi', save_path)

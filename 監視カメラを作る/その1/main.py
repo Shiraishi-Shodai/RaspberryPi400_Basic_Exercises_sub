@@ -1,7 +1,7 @@
 import cv2
 
 camera = cv2.VideoCapture(0)
-print(camera)
+print(camera.isOpened())
 
 while True:
     '''

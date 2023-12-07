@@ -12,9 +12,16 @@ app = Flask(__name__)
 CORS(app)
 
 cap = cv2.VideoCapture(0)
-print(cap.isOpened())
+print(f'第1段階: {cap.isOpened()}')
+if not cap.isOpened():
+    cap.release()
+    cap = cv2.VideoCapture(0)
+    print('通過')
+    print(f'通過時: {cap.isOpened()}')
+print(f'第2段階: {cap.isOpened()}')
 
-# cap.set(cv2.CAP_PROP_SETTINGS, 1)
+
+cap.set(cv2.CAP_PROP_SETTINGS, 1)
 fmt = cv2.VideoWriter_fourcc(*'XVID')    
 fps = 20.0
 size = (640, 480)
@@ -118,4 +125,5 @@ def save():
         return jsonify({'Hello': "I'm save function"})
         
 if __name__ == "__main__":
-    app.run(port='5000', debug=True)
+    print("ここで", cap.isOpened())
+    app.run(port='5000')

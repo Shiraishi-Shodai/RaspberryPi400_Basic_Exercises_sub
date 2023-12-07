@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 
 cap = cv2.VideoCapture(0)
-print(cap.isOpened())
-while(True):
+
+while(cap.isOpened()):
     ret, frame = cap.read()
     cv2.imshow('frame',frame)
 

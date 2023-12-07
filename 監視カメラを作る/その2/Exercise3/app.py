@@ -3,11 +3,13 @@ import cv2
 
 app = Flask(__name__, template_folder="./templates", static_folder="./static")
 
-cap = cv2.VideoCapture(0, cv2.CAP_MSMF)
+cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
 cap.set(cv2.CAP_PROP_FPS, 20.0)           # カメラFPSを20FPSに設定(1秒間に20枚表示)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 300) # カメラ画像の横幅を300に設定
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 200) # カメラ画像の縦幅を200に設定
+
+print(f'ここです: {cap.isOpened()}')
 
 def gen_frames():
     
@@ -62,14 +64,14 @@ def capture():
     if not ret:
         capture_error="キャプチャーエラー"
     else:
-        cv2.imwrite("./static/img/picture.jpg", frame)
+        cv2.imwrite(r"/home/pi/python/RaspberryPi400_Basic_Exercises/監視カメラを作る/その2/Exercise3/static/img/picture.jpg", frame)
 
     return render_template('capture.html', capture_error=capture_error)
 
 @app.route('/save', methods=["POST"])
 def save():
     if request.method == "POST":
-        img = cv2.imread("./static/img/picture.jpg")    
+        img = cv2.imread(r"/home/pi/python/RaspberryPi400_Basic_Exercises/監視カメラを作る/その2/Exercise3/static/img/picture.jpg")    
         file_name = request.form["file_name"] + ".jpg"
         cv2.imwrite(file_name, img)
         # cap.release()
@@ -82,4 +84,4 @@ def index():
    return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(port=5000)

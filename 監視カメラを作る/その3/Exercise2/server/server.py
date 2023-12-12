@@ -1,3 +1,11 @@
+"""GUIを使って、保存ファイル名を指定でき、録画ボタンを押すと映像を取り込んで、
+次に停止ボタンを押すまでの間の動画を指定したファイル名で保存するプログラ
+ムを作成する
+ボタンは、一つにして録画と停止をトグルで表示してもよいし、録画ボタンと停
+止ボタンを二つ用意してもよい。ただし、録画と停止が同時に有効になる状態が
+ないようにボタンを制御すること。"""
+
+
 from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
 import cv2
@@ -5,20 +13,20 @@ from tkinter import filedialog
 import shutil
 import sys
 
-# tkinterはデフォルトでCMSスレッド？らしいものを使用するらしいが、windowsはそれが使えないのでwindows仕様に合わせる
-# sys.coinit_flags = 2 
+"""
+[windows環境で実行する場合の注意]
+tkinterはデフォルトでCMSスレッド？らしいものを使用するらしいが、windowsはそれが使えないのでwindows仕様に合わせる
+sys.coinit_flags = 2 
+"""
 
 app = Flask(__name__)
 CORS(app)
 
 cap = cv2.VideoCapture(0)
-print(f'第1段階: {cap.isOpened()}')
+
 if not cap.isOpened():
     cap.release()
     cap = cv2.VideoCapture(0)
-    print('通過')
-    print(f'通過時: {cap.isOpened()}')
-print(f'第2段階: {cap.isOpened()}')
 
 
 cap.set(cv2.CAP_PROP_SETTINGS, 1)
@@ -107,8 +115,7 @@ def recoding():
 
             break
 
-
-    return jsonify({"a": "b"})
+    return jsonify(res)
     
 
 @app.route('/save', methods=['POST'])

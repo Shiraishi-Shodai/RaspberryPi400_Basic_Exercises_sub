@@ -3,6 +3,7 @@
 import cv2
 import glob
 import os
+import time
 
 def get_f_names(dir_path, ext_list)-> list:
     '''
@@ -53,16 +54,23 @@ def get_new_f_name(f_name_list):
 def main():
     
     camera = cv2.VideoCapture(0)
-    ret, frame = camera.read()
-    
-    if ret:
+    while True:
+        ret, frame = camera.read()
         
-        dir_path = "/home/pi/python/RaspberryPi400_Basic_Exercises/監視カメラを作る/その2/Exercise2/"
-        f_name_list = get_f_names(dir_path, [".jpg"])
-        f_name = get_new_f_name(f_name_list)
-        cv2.imwrite(dir_path + f_name, frame)
+        if ret:
+            
+            cv2.imshow("camera", frame)
+            dir_path = "/home/pi/python/RaspberryPi400_Basic_Exercises/監視カメラを作る/その2/Exercise2/"
+            f_name_list = get_f_names(dir_path, [".jpg"])
+            f_name = get_new_f_name(f_name_list)
+            cv2.imwrite(dir_path + f_name, frame)
+        
+        time.sleep(1)
 
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
     camera.release()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()

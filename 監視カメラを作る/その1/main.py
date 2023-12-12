@@ -1,3 +1,5 @@
+"""RaspberryPi400の画面にカメラの映像を表示する"""
+
 import cv2
 
 camera = cv2.VideoCapture(0)

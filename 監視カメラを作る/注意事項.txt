@@ -1,0 +1,32 @@
+# パスエラーが出たとき
+所々、絶対パスを指定している場所でエラーが発生すると思いますが、申し訳ないのですが、先生の方での修正をお願いします。
+
+# 各種ファイルの基本的な実行方法
+
+1. 仮想環境を作成
+    ```cd 
+    python -m venv env
+
+2. 仮想環境の中に入る
+    source env/bin/activate
+
+3. 各モジュールのインストール
+    pip install -r requirements.txt
+
+4. 実行
+    python ファイルのパス
+
+## その3/Exercise2はNode.jsを使用(Node.jsはnvmコマンドから入手しました)
+node -v: v16.17.1
+npm -v: 8.15.0
+
+### このアプリの実行方法(vnc上から)
+1. ```cd /home/pi/python/RaspberryPi400_Basic_Exercises/監視カメラを作る/その3/Exercise2```
+2. ターミナル２つ用意する
+3. 片方のターミナルで```cd client```, もう片方のターミナルで```cd server```
+4. clientディレクトリを開いているターミナルで```npm start```
+5. clientディレクトリを開いているターミナルで```python server.py```
+
+### このアプリの注意点
+* 録画開始ボタンを押すと、ブラウザ上のカメラ映像が固まったように見えることがありますが、実際には固まっておらず、正常に録画できています
+* tkinterで保存先ダイアログを表示する際、GUIディスプレイを必要とするので、server.pyはvscodeではなく、vnc上で実行してください

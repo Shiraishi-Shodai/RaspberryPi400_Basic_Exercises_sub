@@ -1,3 +1,5 @@
+""" 写真に写る顔を検知し、顔を赤枠で囲う """
+
 import face_recognition
 from PIL import Image, ImageDraw
 

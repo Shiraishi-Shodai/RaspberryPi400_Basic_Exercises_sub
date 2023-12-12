@@ -10,7 +10,7 @@
             <h2 id="error">{{ capture_error }}</h2>
             {% else %}
             <h1>撮影成功！</h1>
-            <img src="{{url_for('static', filename=r'/home/pi/python/RaspberryPi400_Basic_Exercises/監視カメラを作る/その2/Exercise3/static/img/picture.jpg')}}">
+            <img src="{{url_for('static', filename='img/picture.jpg')}}">
             <form action="{{url_for('save')}}" method="post">
                 <label for="file_name">ファイル名: 
                     <input type="text" name="file_name" id="file_name" required>

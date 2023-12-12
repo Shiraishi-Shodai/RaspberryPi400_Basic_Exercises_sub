@@ -1,3 +1,5 @@
+"""プログラムを起動する毎にファイル名が変わり、過去のファイルも残すことができるプログラム"""
+
 import cv2
 import glob
 import os
@@ -41,7 +43,7 @@ def get_new_f_name(f_name_list):
     else:
         try:
             f_name_list.sort()
-            n = int(f_name_list[-1]) + 1
+            n = int(f_name_list[-1]) + 1 # 最も番号が大きいファイル名を取得し、その番号に1を足したものを新しいファイル名とする
             f_name = '{0:03}'.format(n)
         except ValueError as e:
             print(e)

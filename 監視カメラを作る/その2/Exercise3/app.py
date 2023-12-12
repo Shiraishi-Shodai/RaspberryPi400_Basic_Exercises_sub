@@ -1,5 +1,8 @@
+"""GUIを使って、保存ファイル名を指定でき、ボタンを押すとカメラの映像を指定したファイル名で保存するプログラムを作成する"""
+
 from flask import render_template, Flask, Response, request
 import cv2
+import sys
 
 app = Flask(__name__, template_folder="./templates", static_folder="./static")
 
@@ -12,7 +15,14 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 200) # カメラ画像の縦幅を200に設�
 print(f'ここです: {cap.isOpened()}')
 
 def gen_frames():
-    
+   '''
+   画像を取得し
+   
+   :param: なし
+   :type: なし
+   :return: 新しい画像
+   :rtype: generator
+   '''
    while True:
        ret, frame = cap.read()
        if not ret:
@@ -31,6 +41,14 @@ def gen_frames():
 
 @app.route('/video_feed')
 def video_feed():
+    '''
+    画像をストリーミング
+    
+    :param: なし
+    :type: なし
+    :return: 画像情報
+    :rtype: レスポンスオブジェクト
+    '''
     # HTTPレスポンス
    #imgタグに埋め込まれるResponseオブジェクトを返す
     # デフォルトでは、ResponseオブジェクトはHTMLのmimetypeを持ちます。つまり、デフォルトのContent-Typeヘッダーは"text/html"に設定されています。
@@ -58,6 +76,13 @@ def video_feed():
 
 @app.route('/capture')
 def capture():
+    '''
+    picuture.jpgという仮の名前で画像を保存
+    
+    :param: なし
+    :type: なし
+    :return: HTMLファイル
+    '''
     ret, frame = cap.read()
     capture_error = ""
 
@@ -70,13 +95,23 @@ def capture():
 
 @app.route('/save', methods=["POST"])
 def save():
+    '''
+    入力された値でファイルを保存(保存先はその時、自分がいるディレクトリの直下)
+    
+    :param: なし
+    :type: なし
+    :return: なし
+    :rtype: なし
+    '''
     if request.method == "POST":
         img = cv2.imread(r"/home/pi/python/RaspberryPi400_Basic_Exercises/監視カメラを作る/その2/Exercise3/static/img/picture.jpg")    
         file_name = request.form["file_name"] + ".jpg"
         cv2.imwrite(file_name, img)
-        # cap.release()
+        
+        print('アプリケーションを終了します')
+        cap.release()
+        sys.exit(0)
 
-        return  "保存しました"
 @app.route('/')
 @app.route('/index')
 def index():

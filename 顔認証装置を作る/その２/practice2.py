@@ -5,7 +5,7 @@ import numpy as np
 video_capture = cv2.VideoCapture(0)
 
 # Load a sample picture and learn how to recognize it.
-obama_image = face_recognition.load_image_file("/home/pi/python/RaspberryPi400_Basic_Exercises/顔認証装置を作る/その２/shiraishi.jpg")
+obama_image = face_recognition.load_image_file("/home/pi/python/RaspberryPi400_Basic_Exercises/顔認証装置を作る/その２/img/001.jpg")
 # 顔を検出し、その顔から得られた特徴を数値に変換
 # [0]は画像内の最初の顔（あるいは唯一の顔）のエンコーディングを取得している
 # face_recognition.face_encodings(face_image, known_face_locations=None)
@@ -20,7 +20,7 @@ known_face_encodings = [
     biden_face_encoding
 ]
 known_face_names = [
-    "Shiraishi Kuranosuke",
+    "Shiraishi Shota",
     "Barack Obama",
     "Joe Biden"
 ]
@@ -46,9 +46,9 @@ while True:
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         # rgb_small_frame = small_frame[:, :, ::-1]
         
-        # Find all the faces and face encodings in the current frame of video
+        # 画像内に検出された各顔の位置を示すタプルのリストを返す
         face_locations = face_recognition.face_locations(small_frame)
-         # 128次元の特徴ベクトルのnumpy配列を画像に映る人数分(n)格納したリストを返す
+         # 128次元の特徴ベクトルのnumpy配列を画像に映る人数分(n)格納したリストを返す [(128,), (128,) ... n]
         face_encodings = face_recognition.face_encodings(small_frame, face_locations)
 
         face_names = []
